@@ -1,25 +1,24 @@
-/* Global text color to avoid white text */
+
 body {
-    color: #000; /* Set default text color to black */
+    color: #000; 
 }
 
-/* Styling for search form and player cards */
 .card-title, .card-text, .modal-body {
-    color: #333; /* Darker text for readability */
+    color: #333;
 }
 
 .btn-primary, .btn-warning {
-    background-color: #007bff; /* Primary color for buttons */
+    background-color: #007bff; 
     border: none;
     color: white;
 }
 
 .btn-primary:hover, .btn-warning:hover {
-    background-color: #0056b3; /* Darker button color on hover */
+    background-color: #0056b3;
 }
 
 #player-section {
-    background-color: #f8f9fa; /* Light background for contrast */
+    background-color: #f8f9fa; 
     padding: 20px;
     border-radius: 8px;
 }
@@ -32,41 +31,31 @@ body {
     width: 100%;
     height: auto;
 }
-
-/* Styling for the group section (left side) */
 #group-section {
     background-color: #e9ecef;
     padding: 20px;
     border-radius: 8px;
-    height: auto; /* Ensure the section is not too tall */
-    max-height: 100px; /* Keep it short */
-    /* overflow-y: auto;  Add scroll if content exceeds the height */
-    
-    /* Position it fixed in the upper left corner */
+    height: auto;
+    max-height: 100px; 
     position: fixed;
-    top: 50px; /* Distance from the top of the viewport */
-    right: 20px; /* Distance from the left side of the viewport */
-    width: 250px; /* Set a fixed width */
-    /* z-index: 1000; Ensure it stays on top of other content */
+    top: 50px; 
+    right: 20px; 
+    width: 250px; 
 }
 
-/* Ensure the group section stays short */
 .short-section {
-    max-height: 300px; /* Limit the height of the section */
-    overflow-y: auto;  /* Add scroll if content exceeds the height */
+    max-height: 300px; 
+    overflow-y: auto;  
 }
-
-/* Ensure text in list items is visible */
 .list-group-item {
     background-color: #f1f1f1;
     color: #000;
 }
 
-/* Styling for the modal */
 .modal-content {
-    background-color: #fefefe; /* Light background for modal */
+    background-color: #fefefe; 
 }
 
 .modal-body {
-    color: #444; /* Visible color inside the modal */
+    color: #444; 
 }
