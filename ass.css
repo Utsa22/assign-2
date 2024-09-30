@@ -1,24 +1,24 @@
 
 body {
-    color: #000; 
+    color: black; 
 }
 
 .card-title, .card-text, .modal-body {
-    color: #333;
+    color: black;
 }
 
 .btn-primary, .btn-warning {
-    background-color: #007bff; 
+    background-color: rgb(87, 87, 255); 
     border: none;
     color: white;
 }
 
 .btn-primary:hover, .btn-warning:hover {
-    background-color: #0056b3;
+    background-color: blue;
 }
 
 #player-section {
-    background-color: #f8f9fa; 
+    background-color: white; 
     padding: 20px;
     border-radius: 8px;
 }
@@ -32,7 +32,7 @@ body {
     height: auto;
 }
 #group-section {
-    background-color: #e9ecef;
+    background-color: white;
     padding: 20px;
     border-radius: 8px;
     height: auto;
@@ -48,14 +48,14 @@ body {
     overflow-y: auto;  
 }
 .list-group-item {
-    background-color: #f1f1f1;
+    background-color: white;
     color: #000;
 }
 
 .modal-content {
-    background-color: #fefefe; 
+    background-color: whitesmoke; 
 }
 
 .modal-body {
-    color: #444; 
+    color: rgb(48, 42, 42); 
 }
