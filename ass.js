@@ -1,6 +1,5 @@
 let addedPlayers = [];
 let playerCount = 0;
-
 const loadPlayers = () => {
     fetch('https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?p=A')
         .then(res => res.json())
@@ -8,13 +7,7 @@ const loadPlayers = () => {
             if (data.player) {
                 displayPlayers(data.player);
             } 
-            else {
-                alert('No players found for the default load.');
-            }
         })
-        .catch(err => {
-            console.log('Error fetching default players:', err);
-        });
 };
 
 const displayPlayers = (players) => {
@@ -64,9 +57,6 @@ const showPlayerDetails = (playerId) => {
                 <p>Description: ${player.strDescriptionEN ? player.strDescriptionEN.slice(0, 50) : 'No Description'}...</p>
             `;
         })
-        .catch(err => {
-            console.log('Error fetching player details:', err);
-        });
 };
 
 const addToGroup = (playerName) => {
@@ -107,9 +97,6 @@ document.getElementById('search-form').addEventListener('submit', (e) => {
                 alert('No players found for this search term.');
             }
         })
-        .catch(err => {
-            console.log('Error searching for players:', err);
-        });
 });
 
 loadPlayers();
