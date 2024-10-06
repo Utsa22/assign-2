@@ -1,102 +1,119 @@
-let addedPlayers = [];
-let playerCount = 0;
-const loadPlayers = () => {
-    fetch('https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?p=A')
+let addedMeals = [];
+let mealCount = 0;
+const loadMeals = () => {
+    fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=`)
         .then(res => res.json())
         .then(data => {
-            if (data.player) {
-                displayPlayers(data.player);
+            if (data.meals) {
+                displayMeals(data.meals);
             } 
+            else {
+                alert('No meals found');
+            }
         })
+        .catch(err => {
+            console.log('Error fetching default meals:', err);
+        });
 };
 
-const displayPlayers = (players) => {
-    const playerContainer = document.getElementById('player-container');
-    playerContainer.innerHTML = '';
-    players.forEach(player => {
-        const facebookLink = player.strFacebook ? player.strFacebook : '#';
-        const twitterLink = player.strTwitter ? player.strTwitter : '#';
-
+const displayMeals = (meals) => {
+    const mealContainer = document.getElementById('meal-container');
+    mealContainer.innerHTML = '';
+    meals.forEach(meal => {
         const div = document.createElement('div');
         div.classList.add('col-md-4');
         div.innerHTML = `
             <div class="card">
-                <img src="${player.strCutout || 'https://via.placeholder.com/100'}" class="card-img-top" alt="Player Image">
+                <img src="${meal.strMealThumb || 'https://via.placeholder.com/100'}" class="card-img-top" alt="Meal Image">
                 <div class="card-body">
-                    <h5 class="card-title">${player.strPlayer || 'No Name'}</h5>
-                    <p class="card-text">Nationality: ${player.strNationality || 'Not Available'}</p>
-                    <p class="card-text">Team: ${player.strTeam || 'Not Available'}</p>
-                    <p class="card-text">Sport: ${player.strSport || 'Not Available'}</p>
-                    <p class="card-text">Salary: ${player.strWage || 'Not Available'}</p>
-                    <p class="card-text">Description: ${player.strDescriptionEN ? player.strDescriptionEN.slice(0, 50) : 'No Description'}...</p>
-                    <p class="card-text">
-                        <a href="${facebookLink}" target="_blank"><i class="fab fa-facebook"></i></a> | 
-                        <a href="${twitterLink}" target="_blank"><i class="fab fa-twitter"></i></a>
-                    </p>
-                    <button class="btn btn-primary" onclick="showPlayerDetails(${player.idPlayer})" data-bs-toggle="modal" data-bs-target="#playerModal">Details</button>
-                    <button class="btn btn-warning mt-2" onclick="addToGroup('${player.strPlayer}')">Add to Group</button>
+                    <h5 class="card-title">${meal.strMeal || 'No Name'}</h5>
+                    <p class="card-text"><strong>Country:</strong> ${meal.strArea || 'Not Available'}</p>
+                    <p class="card-text"><strong>Catagory:</strong> ${meal.strCategory || 'Not Available'}</p>
+                    <p class="card-text">Instructions: ${meal.strInstructions ? meal.strInstructions.slice(0, 50) : 'No Instructions'}...</p>
+                    <button class="btn btn-primary" onclick="showMealDetails(${meal.idMeal})" data-bs-toggle="modal" data-bs-target="#mealModal">Details</button>
+                    <button class="btn btn-warning mt-2" onclick="addToGroup('${meal.strMeal}')">Add to Group</button>
                 </div>
             </div>
         `;
-        playerContainer.appendChild(div);
+        mealContainer.appendChild(div);
     });
 };
 
-const showPlayerDetails = (playerId) => {
-    fetch(`https://www.thesportsdb.com/api/v1/json/3/lookupplayer.php?id=${playerId}`)
+const showMealDetails = (mealId) => {
+    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
         .then(res => res.json())
         .then(data => {
-            const player = data.players[0];
+            const meal = data.meals[0];
             document.getElementById('modal-body').innerHTML = `
-                <img src="${player.strCutout}" class="img-fluid" alt="Player Image">
-                <h5>${player.strPlayer}</h5>
-                <p>Nationality: ${player.strNationality}</p>
-                <p>Team: ${player.strTeam}</p>
-                <p>Sport: ${player.strSport}</p>
-                <p>Salary: ${player.strWage || 'Not Available'}</p>
-                <p>Description: ${player.strDescriptionEN ? player.strDescriptionEN.slice(0, 50) : 'No Description'}...</p>
+                <img src="${meal.strMealThumb}" class="img-fluid" alt="Meal Image">
+                <h5>${meal.strMeal}</h5>
+                <p><strong>Category:</strong> ${meal.strCategory}</p>
+                <p><strong>Country:</strong> ${meal.strArea}</p>
+                <p><strong>Instructions:</strong> ${meal.strInstructions.slice(0, 50)}...</p>
+                <p><strong>Ingredients:</strong></p>
+                <ul>
+                    ${getIngredients(meal).map(ingredient => `<li>${ingredient}</li>`).join('')}
+                </ul>
             `;
         })
+        .catch(err => {
+            console.log('Error fetching meal details:', err);
+        });
 };
 
-const addToGroup = (playerName) => {
-    if (playerCount >= 11) {
-        alert('You can only add up to 11 players!');
+const getIngredients = (meal) => {
+    let ingredients = [];
+    for (let i = 1; i <= 20; i++) {
+        const ingredient = meal[`strIngredient${i}`];
+        const measure = meal[`strMeasure${i}`];
+        if (ingredient && ingredient.trim()) {
+            ingredients.push(`${ingredient} - ${measure || ''}`.trim());
+        }
+    }
+    return ingredients;
+};
+
+const addToGroup = (mealName) => {
+    if (mealCount >= 11) {
+        alert('You can only add up to 11 meals!');
         return;
     }
-    if (!addedPlayers.includes(playerName)) {
-        addedPlayers.push(playerName);
-        playerCount++;
+    if (!addedMeals.includes(mealName)) {
+        addedMeals.push(mealName);
+        mealCount++;
         updateGroupSection();
     }
 };
 
 const updateGroupSection = () => {
     const groupList = document.getElementById('group-list');
-    const playerCountElement = document.getElementById('player-count');
+    const mealCountElement = document.getElementById('meal-count');
     groupList.innerHTML = '';
-    addedPlayers.forEach(player => {
+    addedMeals.forEach(meal => {
         const li = document.createElement('li');
         li.classList.add('list-group-item');
-        li.textContent = player;
+        li.textContent = meal;
         groupList.appendChild(li);
     });
-    playerCountElement.textContent = playerCount;
+    mealCountElement.textContent = mealCount;
 };
 
 document.getElementById('search-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const searchValue = document.getElementById('search-input').value;
-    fetch(`https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?p=${searchValue}`)
+    fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchValue}`)
         .then(res => res.json())
         .then(data => {
-            if (data.player) {
-                displayPlayers(data.player);
+            if (data.meals) {
+                displayMeals(data.meals);
             } 
             else {
-                alert('No players found for this search term.');
+                alert('No meals found for this search term.');
             }
         })
+        .catch(err => {
+            console.log('Error searching for meals:', err);
+        });
 });
 
-loadPlayers();
+loadMeals();
